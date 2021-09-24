@@ -1,0 +1,19 @@
+use bevy::prelude::*;
+use bevy::render::pipeline::PrimitiveTopology;
+use bevy_rapier3d::prelude::Capsule;
+use bevy::prelude::shape::CapsuleUvProfile;
+
+pub fn wire_capsule(capsule: &Capsule) -> Mesh {
+    let capsule = Mesh::from(bevy::prelude::shape::Capsule {
+        radius: capsule.radius / 2.0,
+        rings: 0,
+        depth: capsule.half_height() / 4.0,
+        latitudes: 8,
+        longitudes: 18,
+        uv_profile: CapsuleUvProfile::Aspect
+    });
+    let mut new_mesh = Mesh::new(PrimitiveTopology::LineList);
+    new_mesh.set_attribute(Mesh::ATTRIBUTE_POSITION, capsule.attribute(Mesh::ATTRIBUTE_POSITION).unwrap().to_owned());
+    new_mesh.set_indices(capsule.indices().map(|x|x.to_owned()));
+    new_mesh
+}

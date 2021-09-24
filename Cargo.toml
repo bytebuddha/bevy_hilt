@@ -1,0 +1,15 @@
+[package]
+name = "bevy_hilt"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default_main_pass = []
+
+[dependencies]
+bevy = {version = "0.5.0", default-features = false }
+bevy_rapier3d = { version = "0.10.0" }
+
+[dev-dependencies]
+bevy = "0.5.0"
+bevy_devtools = { git = "https://github.com/Bytebuddha/bevy_devtools" }
