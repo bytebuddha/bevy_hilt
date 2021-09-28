@@ -1,13 +1,16 @@
 use bevy::prelude::*;
 use bevy::render::pipeline::PrimitiveTopology;
-use bevy_rapier3d::prelude::Capsule;
+#[cfg(feature = "3d")]
+use bevy_rapier3d::prelude::*;
+#[cfg(feature = "2d")]
+use bevy_rapier2d::prelude::*;
 use bevy::prelude::shape::CapsuleUvProfile;
 
-pub fn wire_capsule(capsule: &Capsule) -> Mesh {
+pub fn wire_capsule(capsule: &Capsule, config: &RapierConfiguration) -> Mesh {
     let capsule = Mesh::from(bevy::prelude::shape::Capsule {
-        radius: capsule.radius / 2.0,
+        radius: capsule.radius * config.scale,
         rings: 0,
-        depth: capsule.half_height() / 4.0,
+        depth: capsule.half_height() / 4.0 * config.scale,
         latitudes: 8,
         longitudes: 18,
         uv_profile: CapsuleUvProfile::Aspect
