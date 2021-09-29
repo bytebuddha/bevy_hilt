@@ -6,17 +6,9 @@ use bevy_rapier2d::prelude::*;
 use bevy_hilt::entities::{HiltDebugCollider, HiltCameraBundle};
 
 #[cfg(feature = "3d")]
-pub fn spawn_environment(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>
-) {
+pub fn spawn_environment(mut commands: Commands) {
     // plane
-    commands.spawn_bundle(PbrBundle {
-        mesh: meshes.add(Mesh::from(bevy::prelude::shape::Plane { size: 15.0 })),
-        material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-        ..Default::default()
-    })
+    commands.spawn()
     .insert(Name::new("Plane"))
     .insert_bundle(RigidBodyBundle {
         body_type: RigidBodyType::Static,
@@ -54,24 +46,13 @@ pub fn spawn_environment(
 }
 
 #[cfg(feature = "2d")]
-pub fn spawn_environment(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-    windows: Res<Windows>
-) {
-    let window = windows.get_primary().unwrap();
+pub fn spawn_environment(mut commands: Commands) {
     // plane
-    commands.spawn_bundle(PbrBundle {
-        mesh: meshes.add(Mesh::from(bevy::prelude::shape::Quad { size: Vec2::new(500.0, 10.0), flip: false })),
-        material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-        transform: Transform::from_xyz(0.0, -window.height() / 3.0, 0.0),
-        ..Default::default()
-    })
+    commands.spawn()
     .insert(Name::new("Plane"))
     .insert_bundle(RigidBodyBundle {
         body_type: RigidBodyType::Static,
-        position: Vec2::new(0.0, -window.height() / 3.0).into(),
+        position: Vec2::new(0.0, -250.0).into(),
         ..Default::default()
     })
     .insert_bundle(ColliderBundle {
@@ -80,12 +61,6 @@ pub fn spawn_environment(
         ..Default::default()
     })
     .insert(HiltDebugCollider { color: Color::GREEN });
-    // light
-    commands.spawn_bundle(LightBundle {
-        transform: Transform::from_xyz(4.0, 8.0, 4.0),
-        ..Default::default()
-    })
-    .insert(Name::new("Light 1"));
 
     commands.spawn_bundle(LightBundle {
         transform: Transform::from_xyz(-3.0, 8.5, -3.8),

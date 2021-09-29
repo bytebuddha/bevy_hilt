@@ -12,11 +12,7 @@ const DIMENSION_SCALE: f32 = 1.0;
 #[cfg(feature = "2d")]
 const DIMENSION_SCALE: f32 = 100.0;
 
-fn spawn_scene(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>
-) {
+fn spawn_scene(mut commands: Commands) {
     commands.spawn()
         .insert(Name::new("Objects"))
         .insert(Transform::identity())
@@ -24,18 +20,17 @@ fn spawn_scene(
         .with_children(|parent| {
             for x_coord in 1..4 {
                 for y_coord in 1..4 {
-                    let pos_x = (x_coord as f32 * 2.0 * DIMENSION_SCALE) - 4.0 * DIMENSION_SCALE;
+                    let pos_x = (x_coord as f32 * 2.0 * DIMENSION_SCALE) - 4.0 * DIMENSION_SCALE + y_coord as f32 / 2.0 * DIMENSION_SCALE;
                     let pos_y = (x_coord * y_coord) as f32 * 0.8 * DIMENSION_SCALE;
+                    #[cfg(feature = "3d")]
                     let pos_z = (y_coord as f32 * 2.0 * DIMENSION_SCALE) - 4.0 * DIMENSION_SCALE;
-                    let (shape, display) = generate_shape(x_coord, y_coord);
-                    parent.spawn_bundle(PbrBundle {
-                            mesh: meshes.add(display),
-                            material: materials.add(Color::BLACK.into()),
-                            ..Default::default()
-                        })
-                        .insert_bundle(RigidBodyBundle {
+                    let shape = generate_shape(x_coord, y_coord);
+                    parent.spawn_bundle(RigidBodyBundle {
                             body_type: RigidBodyType::Dynamic,
+                            #[cfg(feature = "3d")]
                             position: Vec3::new(pos_x, pos_y, pos_z).into(),
+                            #[cfg(feature = "2d")]
+                            position: Vec2::new(pos_x, pos_y).into(),
                             ..Default::default()
                         })
                         .insert(RigidBodyPositionSync::Discrete)
@@ -57,22 +52,15 @@ fn spawn_scene(
         });
 }
 
-fn generate_shape(col: usize, row: usize) -> (SharedShape, Mesh) {
+fn generate_shape(col: usize, row: usize) -> SharedShape {
     let vec = col as f32 * 0.2 * DIMENSION_SCALE;
     match row {
-        1 => (
-            ColliderShape::ball(0.25 * DIMENSION_SCALE + vec),
-            Mesh::from(bevy::prelude::shape::Icosphere { radius: 0.25 * DIMENSION_SCALE + vec, subdivisions: 1 })
-        ),
-        2 => (
-            #[cfg(feature = "3d")]
-            ColliderShape::cuboid(0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec),
-            #[cfg(feature = "2d")]
-            ColliderShape::cuboid(0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec),
-            Mesh::from(bevy::prelude::shape::Box::new(0.50 * DIMENSION_SCALE + vec*2., 0.50 * DIMENSION_SCALE + vec*2., 0.50 * DIMENSION_SCALE+ vec*2.))
-        ),
-        3 => (
-            ColliderShape::capsule(
+        1 => ColliderShape::ball(0.5 / DIMENSION_SCALE + vec),
+        #[cfg(feature = "3d")]
+        2 => ColliderShape::cuboid(0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec),
+        #[cfg(feature = "2d")]
+        2 => ColliderShape::cuboid(0.25 * DIMENSION_SCALE + vec, 0.25 * DIMENSION_SCALE + vec),
+        3 => ColliderShape::capsule(
                 #[cfg(feature = "3d")]
                 Vec3::new(0.0, 0.0, 0.0).into(),
                 #[cfg(feature = "2d")]
@@ -82,15 +70,6 @@ fn generate_shape(col: usize, row: usize) -> (SharedShape, Mesh) {
                 #[cfg(feature = "2d")]
                 Vec2::new(0.0, vec + 1.0 * DIMENSION_SCALE).into(),
                 0.25 + vec
-            ),
-            Mesh::from(bevy::prelude::shape::Capsule {
-                    radius: 0.125 * DIMENSION_SCALE + vec/2.0,
-                    rings: 0,
-                    depth: vec - 0.125 * DIMENSION_SCALE,
-                    latitudes: 6,
-                    longitudes: 14,
-                    uv_profile: bevy::prelude::shape::CapsuleUvProfile::Aspect
-            })
         ),
         _ => unreachable!()
     }

@@ -15,6 +15,7 @@ impl Plugin for ExamplePlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_plugin(bevy_devtools::DevToolsPlugin::<()>::default())
             .devtools_enabled()
+            .devtools_active_panel(3)
             .add_startup_system(spawn_environment.system().label("environment"))
             .add_system(debug::show_colliders_changed.system())
             .add_system(debug::show_render_pass_changed.system())

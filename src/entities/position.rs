@@ -3,9 +3,21 @@ use bevy::render::pipeline::RenderPipeline;
 
 use crate::render::PositionWireframeMaterial;
 
+pub struct HiltDebugPositionSize(pub f32);
+
+impl Default for HiltDebugPositionSize {
+    fn default() -> HiltDebugPositionSize {
+        #[cfg(feature = "3d")]
+        return HiltDebugPositionSize(0.1);
+        #[cfg(feature = "2d")]
+        HiltDebugPositionSize(10.0)
+    }
+}
+
 #[derive(Bundle)]
 pub struct HiltDebugPositionBundle {
     pub mesh: Handle<Mesh>,
+    pub size: HiltDebugPositionSize,
     pub material: Handle<PositionWireframeMaterial>,
     #[cfg(feature = "default_main_pass")]
     pub main_pass: bevy::render::render_graph::base::MainPass,
@@ -28,6 +40,7 @@ impl Default for HiltDebugPositionBundle {
             ]),
             visible: Visible { is_visible: true, is_transparent: true },
             mesh: Default::default(),
+            size: Default::default(),
             material: Default::default(),
             #[cfg(feature = "default_main_pass")]
             main_pass: Default::default(),

@@ -71,7 +71,7 @@ fn collider_transform(co_pos: &ColliderPosition) -> Transform {
         co_pos.translation.y,
         1.0
     );
-//    transform.rotation = Quat::from_rotation_y(co_pos.rotation.complex().re);
+//    transform.rotation = Quat::from_rotation_z(co_pos.rotation.complex().re);
 //    transform.rotation = co_pos.rotation.into();
     transform
 }

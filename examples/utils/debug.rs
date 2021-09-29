@@ -10,15 +10,19 @@ pub fn settings() -> Setting {
 }
 
 pub fn show_colliders_changed(
-    mut last_value: Local<bool>,
+    mut last_value: Local<Option<bool>>,
     settings: Res<Settings>,
     mut events: EventWriter<bevy_hilt::HiltToggleVisibility>
 ) {
   if let Some(setting) = settings.get_key(&["rapier-hilt", "show-colliders"]) {
       if let Some(value) = setting.value.as_bool() {
-          if *last_value != value {
-              *last_value = value;
-              events.send(bevy_hilt::HiltToggleVisibility(bevy_hilt::HiltEntities::All));
+          if let Some(ref mut last_value) = *last_value {
+              if *last_value != value {
+                  *last_value = value;
+                  events.send(bevy_hilt::HiltToggleVisibility(bevy_hilt::HiltEntities::All));
+              }
+          } else {
+              *last_value = Some(setting.value.as_bool().unwrap());
           }
       } else {
           error!("DevTools Settings key `rapier-hilt -> show-colliders` is not a bool");
@@ -29,15 +33,19 @@ pub fn show_colliders_changed(
 }
 
 pub fn show_render_pass_changed(
-    mut last_value: Local<bool>,
+    mut last_value: Local<Option<bool>>,
     settings: Res<Settings>,
     mut events: EventWriter<bevy_hilt::HiltToggleRenderPass>
 ) {
   if let Some(setting) = settings.get_key(&["rapier-hilt", "render-pass"]) {
       if let Some(value) = setting.value.as_bool() {
-          if *last_value != value {
-              *last_value = value;
-              events.send(bevy_hilt::HiltToggleRenderPass(bevy_hilt::HiltEntities::All));
+          if let Some(ref mut last_value) = *last_value {
+              if *last_value != value {
+                  *last_value = value;
+                  events.send(bevy_hilt::HiltToggleRenderPass(bevy_hilt::HiltEntities::All));
+              }
+          } else {
+              *last_value = Some(setting.value.as_bool().unwrap());
           }
       } else {
           error!("DevTools Settings key `rapier-hilt -> render-pass` is not a bool");

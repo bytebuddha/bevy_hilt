@@ -7,7 +7,7 @@ mod path;
 pub use self::path::HiltDebugPathWireframeBundle;
 
 mod position;
-pub use self::position::HiltDebugPositionBundle;
+pub use self::position::{HiltDebugPositionBundle, HiltDebugPositionSize};
 
 mod camera;
 pub use self::camera::HiltCameraBundle;
@@ -51,6 +51,7 @@ impl Default for HiltDebugPath {
 
 #[derive(Debug)]
 pub struct HiltDebugPosition {
+    pub size: f32,
     pub x: Color,
     pub y: Color,
     pub z: Color
@@ -59,6 +60,10 @@ pub struct HiltDebugPosition {
 impl Default for HiltDebugPosition {
     fn default() -> HiltDebugPosition {
         HiltDebugPosition {
+            #[cfg(feature = "3d")]
+            size: 0.2,
+            #[cfg(feature = "2d")]
+            size: 10.0,
             x: Color::RED,
             y: Color::BLUE,
             z: Color::GREEN
