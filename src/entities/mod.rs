@@ -10,7 +10,10 @@ mod position;
 pub use self::position::{HiltDebugPositionBundle, HiltDebugPositionSize};
 
 mod camera;
-pub use self::camera::HiltCameraBundle;
+pub use self::camera::{
+    HiltOrthographicCameraBundle,
+    HiltPerspectiveCameraBundle
+};
 
 pub struct HiltDebugColliderLoaded;
 pub struct HiltDebugPositionLoaded;

@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 #[cfg(feature = "2d")]
 use bevy_rapier2d::prelude::*;
-use bevy_hilt::entities::{HiltDebugCollider, HiltCameraBundle};
+use bevy_hilt::entities::*;
 
 #[cfg(feature = "3d")]
 pub fn spawn_environment(mut commands: Commands) {
@@ -39,7 +39,7 @@ pub fn spawn_environment(mut commands: Commands) {
     })
     .insert(super::rotates::Rotates)
     .with_children(|parent| {
-        parent.spawn_bundle(HiltCameraBundle {
+        parent.spawn_bundle(HiltPerspectiveCameraBundle {
             ..Default::default()
         });
     });
@@ -70,7 +70,7 @@ pub fn spawn_environment(mut commands: Commands) {
 
     commands.spawn_bundle(OrthographicCameraBundle::new_2d())
     .with_children(|parent| {
-        parent.spawn_bundle(HiltCameraBundle {
+        parent.spawn_bundle(HiltOrthographicCameraBundle {
             ..Default::default()
         });
     });
