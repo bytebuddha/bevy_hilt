@@ -10,5 +10,5 @@ layout(set = 1, binding = 0) uniform Transform {
 };
 void main() {
     gl_Position = ViewProj * Model * vec4(Vertex_Position, 1.0);
-    v_Position = gl_Position.xyz;
+    v_Position = Vertex_Position;
 }
