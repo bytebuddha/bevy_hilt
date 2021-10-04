@@ -10,6 +10,12 @@ pub use self::trimesh::wire_trimesh;
 mod capsule;
 pub use self::capsule::wire_capsule;
 
+mod polyline;
+pub use self::polyline::wire_polyline;
+
+mod segment;
+pub use self::segment::wire_segment;
+
 use bevy::prelude::*;
 use bevy::render::pipeline::PrimitiveTopology;
 use bevy::render::mesh::Indices;

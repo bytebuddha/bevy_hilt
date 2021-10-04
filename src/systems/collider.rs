@@ -95,7 +95,7 @@ fn collider_to_mesh(shape: &ColliderShape, config: &RapierConfiguration) -> Opti
     match shape.shape_type() {
         ShapeType::Cuboid => {
             let cuboid = shape.as_cuboid().unwrap();
-            Some(crate::mesh::wire_cube(cuboid))
+            Some(crate::mesh::wire_cube(cuboid, config))
         },
         ShapeType::Ball => {
             let ball = shape.as_ball().unwrap();
@@ -108,6 +108,14 @@ fn collider_to_mesh(shape: &ColliderShape, config: &RapierConfiguration) -> Opti
         ShapeType::Capsule => {
             let capsule = shape.as_capsule().unwrap();
             Some(crate::mesh::wire_capsule(capsule, config))
+        },
+        ShapeType::Polyline => {
+            let polyline = shape.as_polyline().unwrap();
+            Some(crate::mesh::wire_polyline(polyline))
+        },
+        ShapeType::Segment => {
+            let segment = shape.as_segment().unwrap();
+            Some(crate::mesh::wire_segment(segment))
         },
         ty => {
             warn!("Unable to render collider shape type: {:?}", ty);

@@ -6,10 +6,10 @@ use bevy_rapier3d::prelude::*;
 use bevy_rapier2d::prelude::*;
 
 #[cfg(feature = "3d")]
-pub fn wire_cube(cuboid: &Cuboid) -> Mesh {
-    let x = cuboid.half_extents.x;
-    let y = cuboid.half_extents.y;
-    let z = cuboid.half_extents.z;
+pub fn wire_cube(cuboid: &Cuboid, config: &RapierConfiguration) -> Mesh {
+    let x = cuboid.half_extents.x * config.scale;
+    let y = cuboid.half_extents.y * config.scale;
+    let z = cuboid.half_extents.z * config.scale;
     let mut mesh = Mesh::new(PrimitiveTopology::LineList);
     mesh.set_attribute(
         Mesh::ATTRIBUTE_POSITION,
@@ -35,9 +35,9 @@ pub fn wire_cube(cuboid: &Cuboid) -> Mesh {
 }
 
 #[cfg(feature = "2d")]
-pub fn wire_cube(cuboid: &Cuboid) -> Mesh {
-    let x = cuboid.half_extents.x;
-    let y = cuboid.half_extents.y;
+pub fn wire_cube(cuboid: &Cuboid, config: &RapierConfiguration) -> Mesh {
+    let x = cuboid.half_extents.x * config.scale;
+    let y = cuboid.half_extents.y * config.scale;
 //    let z = cuboid.half_extents.z;
     let mut mesh = Mesh::new(PrimitiveTopology::LineStrip);
     mesh.set_attribute(

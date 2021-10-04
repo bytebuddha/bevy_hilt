@@ -56,7 +56,18 @@ pub fn spawn_environment(mut commands: Commands) {
         ..Default::default()
     })
     .insert_bundle(ColliderBundle {
-        shape: ColliderShape::cuboid(500.0, 10.0),
+        shape: ColliderShape::polyline(vec![
+                [250.0, 150.0].into(),
+                [200.0, 175.0].into(),
+                [150.0, 125.0].into(),
+                [50.0, 0.0].into(),
+                [-25.0, 100.0].into(),
+                [-50.0, -50.0].into(),
+                [-150.0, 150.0].into(),
+                [-200.0, -25.0].into(),
+            ],
+            None
+        ),
         mass_properties: ColliderMassProps::Density(200.0),
         ..Default::default()
     })
