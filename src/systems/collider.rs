@@ -117,6 +117,11 @@ fn collider_to_mesh(shape: &ColliderShape, config: &RapierConfiguration) -> Opti
             let segment = shape.as_segment().unwrap();
             Some(crate::mesh::wire_segment(segment))
         },
+        #[cfg(feature = "3d")]
+        ShapeType::Cylinder => {
+            let cylinder = shape.as_cylinder().unwrap();
+            Some(crate::mesh::wire_cylinder(cylinder, config))
+        },
         ty => {
             warn!("Unable to render collider shape type: {:?}", ty);
             None

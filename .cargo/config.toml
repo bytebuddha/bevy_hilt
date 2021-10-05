@@ -37,5 +37,7 @@ codegen-units = 1
 [alias]
 "run:drop3d" = ["run", "--example", "drop", "--release", "--features", "3d"]
 "run:drop2d" = ["run", "--example", "drop", "--release", "--features", "2d"]
+"run:shapes3d" = ["run", "--example", "shapes", "--release", "--features", "3d"]
+"run:shapes2d" = ["run", "--example", "shapes", "--release", "--features", "2d"]
 "run:positioned3d" = ["run", "--example", "positioned", "--release", "--features", "3d"]
 "run:positioned2d" = ["run", "--example", "positioned", "--release", "--features", "2d"]

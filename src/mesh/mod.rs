@@ -16,6 +16,11 @@ pub use self::polyline::wire_polyline;
 mod segment;
 pub use self::segment::wire_segment;
 
+#[cfg(feature = "3d")]
+mod cylinder;
+#[cfg(feature = "3d")]
+pub use self::cylinder::wire_cylinder;
+
 use bevy::prelude::*;
 use bevy::render::pipeline::PrimitiveTopology;
 use bevy::render::mesh::Indices;
